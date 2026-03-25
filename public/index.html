@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YearView</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="landing">
+  <main class="landing-main">
+    <h1>YearView</h1>
+    <p>Your entire Google Calendar year, at a glance.</p>
+    <a href="/auth/login" class="btn btn-primary">Connect Google Calendar</a>
+    <p id="error-msg" class="error-msg" hidden></p>
+  </main>
+  <script>
+    const p = new URLSearchParams(location.search);
+    if (p.get('error')) {
+      const el = document.getElementById('error-msg');
+      el.textContent = p.get('error') === 'access_denied'
+        ? 'Access was denied. Please try again.'
+        : 'Authentication failed. Please try again.';
+      el.hidden = false;
+    }
+    // Redirect if already authenticated
+    fetch('/auth/status').then(r => r.json()).then(d => {
+      if (d.authenticated) location.href = '/calendar.html';
+    });
+  </script>
+</body>
+</html>

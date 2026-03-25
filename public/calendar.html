@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YearView</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="app">
+
+  <!-- ── Header ─────────────────────────────────────────────────────── -->
+  <header class="app-header">
+    <div class="header-left">
+      <button id="sidebar-toggle" class="btn-icon" title="Toggle sidebar">&#9776;</button>
+      <span class="app-title">YearView</span>
+    </div>
+    <div class="header-center">
+      <button id="prev-year" class="btn-icon" title="Previous year">&#8249;</button>
+      <span id="year-label" class="year-label">2026</span>
+      <button id="next-year" class="btn-icon" title="Next year">&#8250;</button>
+    </div>
+    <div class="header-right">
+      <div class="view-toggle">
+        <button id="view-timeline" class="btn-view active" title="Timeline view">Timeline</button>
+        <button id="view-grid" class="btn-view" title="Grid view">Grid</button>
+      </div>
+      <div id="align-toggle" class="view-toggle">
+        <button id="align-weekday" class="btn-view active" title="Align by day of week">By weekday</button>
+        <button id="align-date" class="btn-view" title="Align by date">By date</button>
+      </div>
+      <button id="refresh-btn" class="btn-icon" title="Refresh events">&#8635;</button>
+      <a href="/auth/logout" class="btn-text">Sign out</a>
+    </div>
+  </header>
+
+  <!-- ── Body ───────────────────────────────────────────────────────── -->
+  <div class="app-body">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-inner">
+        <div class="sidebar-header">
+          <span class="sidebar-title">Calendars</span>
+          <button id="select-all" class="btn-text-sm">All</button>
+          <button id="deselect-all" class="btn-text-sm">None</button>
+        </div>
+        <ul id="calendar-list" class="calendar-list">
+          <!-- populated by JS -->
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+
+        <div class="setting-row">
+          <span class="setting-label">Colour from</span>
+          <div class="view-toggle setting-toggle">
+            <button id="color-from-event" class="btn-view active">Event</button>
+            <button id="color-from-calendar" class="btn-view">Calendar</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <label class="setting-label" for="chip-toggle">Show colour chip</label>
+          <input type="checkbox" id="chip-toggle" class="setting-checkbox">
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Main grid area -->
+    <main id="main-view" class="main-view">
+      <div id="loading" class="loading">Loading events…</div>
+      <div id="year-grid" class="year-grid" hidden></div>
+    </main>
+
+  </div>
+
+  <!-- ── Day popover ────────────────────────────────────────────────── -->
+  <div id="popover" class="popover" hidden>
+    <div class="popover-header">
+      <span id="popover-date" class="popover-date"></span>
+      <button id="popover-close" class="btn-icon popover-close">&#x2715;</button>
+    </div>
+    <ul id="popover-events" class="popover-events"></ul>
+  </div>
+  <div id="popover-backdrop" class="popover-backdrop" hidden></div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
