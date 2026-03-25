@@ -11,6 +11,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust Cloudflare / reverse proxy — needed for secure cookies behind HTTPS termination
+app.set('trust proxy', 1);
+
 // ── Session ────────────────────────────────────────────────────────────────
 const SessionStore = SqliteStore(session);
 const db = new Database(process.env.DB_PATH || join(__dirname, 'sessions.db'));
