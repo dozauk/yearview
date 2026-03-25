@@ -11,7 +11,7 @@
         source = "yearview_data"
         destination = "/data"
       ```
-- [ ] Update `server.js` to use `DB_PATH` env var for `sessions.db` location
+- [x] Update `server.js` to use `DB_PATH` env var for `sessions.db` location
 - [ ] Set Fly secrets: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`,
       `SESSION_SECRET`, `NODE_ENV=production`, `DB_PATH=/data/sessions.db`
 - [ ] Add production URL to Google Cloud Console (Authorized redirect URIs + JavaScript origins)

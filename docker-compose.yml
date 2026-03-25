@@ -1,0 +1,21 @@
+services:
+
+  yearview:
+    image: yearview:latest          # built locally, or replace with ghcr.io/dozauk/yearview:latest
+    build: .                        # comment this out if pulling a pre-built image
+    restart: unless-stopped
+    ports:
+      - "3000:3000"                 # remove this if using Cloudflare tunnel (tunnel talks directly to the container)
+    volumes:
+      - yearview_data:/data         # persists sessions.db across restarts
+    environment:
+      NODE_ENV: production
+      DB_PATH: /data/sessions.db
+      PORT: 3000
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      SESSION_SECRET: ${SESSION_SECRET}
+
+volumes:
+  yearview_data:

@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // ── Session ────────────────────────────────────────────────────────────────
 const SessionStore = SqliteStore(session);
-const db = new Database(join(__dirname, 'sessions.db'));
+const db = new Database(process.env.DB_PATH || join(__dirname, 'sessions.db'));
 
 app.use(session({
   store: new SessionStore({ client: db, expired: { clear: true, intervalMs: 15 * 60 * 1000 } }),
