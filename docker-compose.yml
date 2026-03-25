@@ -13,7 +13,7 @@ services:
       PORT: 3000
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: https://yearview.doza.org/auth/callback
+      GOOGLE_REDIRECT_URI: https://yearview.doza.tech/auth/callback
       SESSION_SECRET: ${SESSION_SECRET}
 
   cloudflared:
