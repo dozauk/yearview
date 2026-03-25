@@ -4,8 +4,7 @@ services:
     image: yearview:latest          # built locally, or replace with ghcr.io/dozauk/yearview:latest
     build: .                        # comment this out if pulling a pre-built image
     restart: unless-stopped
-    ports:
-      - "3000:3000"                 # remove this if using Cloudflare tunnel (tunnel talks directly to the container)
+    # No ports: exposed — traffic arrives only via the Cloudflare tunnel
     volumes:
       - yearview_data:/data         # persists sessions.db across restarts
     environment:
@@ -14,8 +13,17 @@ services:
       PORT: 3000
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      GOOGLE_REDIRECT_URI: https://yearview.doza.org/auth/callback
       SESSION_SECRET: ${SESSION_SECRET}
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - yearview
 
 volumes:
   yearview_data:
