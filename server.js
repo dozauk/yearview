@@ -1,5 +1,7 @@
 import 'node:process';
+import { randomBytes } from 'node:crypto';
 import express from 'express';
+import helmet from 'helmet';
 import session from 'express-session';
 import SqliteStore from 'better-sqlite3-session-store';
 import Database from 'better-sqlite3';
@@ -11,8 +13,19 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ── Fail loudly if critical env vars are missing in production ─────────────
+if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+  console.error('FATAL: SESSION_SECRET environment variable must be set in production.');
+  process.exit(1);
+}
+
 // Trust Cloudflare / reverse proxy — needed for secure cookies behind HTTPS termination
 app.set('trust proxy', 1);
+
+// ── Security headers (helmet) ──────────────────────────────────────────────
+// CSP is disabled — it requires per-app tuning and would need nonces for
+// the inline scripts in index.html. All other helmet defaults are applied.
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // ── Session ────────────────────────────────────────────────────────────────
 const SessionStore = SqliteStore(session);
@@ -62,22 +75,37 @@ function authedClient(req) {
 }
 
 // ── Auth routes ────────────────────────────────────────────────────────────
-app.get('/auth/login', (_req, res) => {
+app.get('/auth/login', (req, res) => {
+  const state = randomBytes(32).toString('hex');
   const client = makeOAuthClient();
   const url = client.generateAuthUrl({
     access_type: 'offline',
     prompt: 'consent',           // ensures refresh_token is always returned
+    state,
     scope: [
       'https://www.googleapis.com/auth/calendar.readonly',
       'https://www.googleapis.com/auth/userinfo.email',
     ],
   });
-  res.redirect(url);
+  // Save state to session before redirecting — explicit save ensures it's
+  // written to SQLite before Google bounces the user back to /auth/callback
+  req.session.oauthState = state;
+  req.session.save(err => {
+    if (err) return res.redirect('/?error=auth_failed');
+    res.redirect(url);
+  });
 });
 
 app.get('/auth/callback', async (req, res) => {
-  const { code, error } = req.query;
+  const { code, error, state } = req.query;
   if (error || !code) return res.redirect('/?error=access_denied');
+
+  // Validate state parameter to prevent OAuth CSRF / authorisation code injection
+  if (!state || state !== req.session.oauthState) {
+    return res.redirect('/?error=auth_failed');
+  }
+  delete req.session.oauthState;
+
   try {
     const client = makeOAuthClient();
     const { tokens } = await client.getToken(code);
@@ -131,7 +159,12 @@ const EVENT_COLOR_MAP = {
 // GET /api/events?year=2026 — fetch all events for the year across all calendars
 app.get('/api/events', requireAuth, async (req, res) => {
   try {
-    const year = parseInt(req.query.year) || new Date().getFullYear();
+    // Clamp year to a sensible range to prevent resource exhaustion
+    const requestedYear = parseInt(req.query.year);
+    const year = isNaN(requestedYear)
+      ? new Date().getFullYear()
+      : Math.min(Math.max(requestedYear, 2000), 2100);
+
     const timeMin = new Date(year, 0, 1).toISOString();
     const timeMax = new Date(year, 11, 31, 23, 59, 59).toISOString();
 
