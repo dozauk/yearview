@@ -1,5 +1,5 @@
 // View B: 3-column × 4-row month grid
-import { DAYS, MONTHS, monthGridDays, toWeeks, ymd, todayYmd, resolveColors } from './util.js';
+import { DAYS, MONTHS, monthGridDays, toWeeks, ymd, todayYmd, resolveColors, openEditPopup } from './util.js';
 
 const MAX_BARS = 3;
 
@@ -86,10 +86,19 @@ function renderEventBars(cell, events, key, onDayClick, colorSource, showChip) {
       chipEl.style.background = chip;
       bar.appendChild(chipEl);
     }
-    bar.addEventListener('click', ev => { ev.stopPropagation(); onDayClick(key, events); });
+    let clickTimer = null;
+    bar.addEventListener('click', ev => {
+      ev.stopPropagation();
+      if (clickTimer) return;
+      clickTimer = setTimeout(() => {
+        clickTimer = null;
+        onDayClick(key, events);
+      }, 220);
+    });
     bar.addEventListener('dblclick', ev => {
       ev.stopPropagation();
-      if (e.htmlLink) window.open(e.htmlLink, '_blank', 'noopener');
+      clearTimeout(clickTimer); clickTimer = null;
+      openEditPopup(e.editLink);
     });
     cell.appendChild(bar);
   });

@@ -159,6 +159,13 @@ app.get('/api/events', requireAuth, async (req, res) => {
         calendarColor: calendars[i].backgroundColor || '#4285f4',
         eventColor: e.colorId ? (EVENT_COLOR_MAP[e.colorId] || null) : null,
         htmlLink: e.htmlLink || null,
+        editLink: (() => {
+          if (!e.htmlLink) return null;
+          try {
+            const eid = new URL(e.htmlLink).searchParams.get('eid');
+            return eid ? `https://calendar.google.com/calendar/r/eventedit/${eid}` : null;
+          } catch { return null; }
+        })(),
       }))
     );
 

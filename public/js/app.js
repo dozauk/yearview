@@ -1,5 +1,5 @@
 import { fetchCalendars, fetchEvents } from './api.js';
-import { buildDayMap, formatEventTime, formatPopoverDate, resolveColors } from './util.js';
+import { buildDayMap, formatEventTime, formatPopoverDate, resolveColors, openEditPopup } from './util.js';
 import { renderTimeline } from './timeline.js';
 import { renderGrid } from './grid.js';
 
@@ -165,13 +165,15 @@ function openPopover(dateKey, dayEvents) {
     info.appendChild(titleEl);
     info.appendChild(timeEl);
     info.appendChild(calEl);
-    if (e.htmlLink) {
+    if (e.editLink) {
       const linkEl = document.createElement('a');
       linkEl.className = 'popover-event-link';
-      linkEl.href = e.htmlLink;
-      linkEl.target = '_blank';
-      linkEl.rel = 'noopener';
-      linkEl.textContent = 'Open in Google Calendar →';
+      linkEl.href = e.editLink;
+      linkEl.textContent = 'Edit in Google Calendar →';
+      linkEl.addEventListener('click', ev => {
+        ev.preventDefault();
+        openEditPopup(e.editLink);
+      });
       info.appendChild(linkEl);
     }
     li.appendChild(dot);

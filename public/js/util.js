@@ -81,6 +81,16 @@ export function formatEventTime(event) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+// Open the Google Calendar event editor in a centred popup window
+export function openEditPopup(url) {
+  if (!url) return;
+  const w = 920, h = 720;
+  const left = Math.round((screen.width  - w) / 2);
+  const top  = Math.round((screen.height - h) / 2);
+  window.open(url, 'gcal-edit',
+    `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+}
+
 // Resolve primary bar colour and optional secondary chip colour.
 // colorSource: 'event' → bar=eventColor (fallback calendarColor), chip=calendarColor if different
 //              'calendar' → bar=calendarColor, chip=eventColor if set

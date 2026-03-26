@@ -5,7 +5,7 @@
 // align: 'weekday' → months offset so weekdays align vertically (~35-37 cols)
 //        'date'    → strict 31 cols, all months aligned by date number
 
-import { DAYS, MONTHS, todayYmd, resolveColors } from './util.js';
+import { DAYS, MONTHS, todayYmd, resolveColors, openEditPopup } from './util.js';
 
 const MAX_LANES = 3; // visible event rows per day before "+N more"
 
@@ -223,15 +223,21 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
         bar.appendChild(chipEl);
       }
 
+      let clickTimer = null;
       bar.addEventListener('click', ev => {
         ev.stopPropagation();
-        const col = e.colStart;
-        const dayEvts = positioned.filter(pe => pe.colStart <= col && pe.colEnd >= col);
-        onDayClick(e.clippedStart, dayEvts);
+        if (clickTimer) return; // part of a double-click, ignore
+        clickTimer = setTimeout(() => {
+          clickTimer = null;
+          const col = e.colStart;
+          const dayEvts = positioned.filter(pe => pe.colStart <= col && pe.colEnd >= col);
+          onDayClick(e.clippedStart, dayEvts);
+        }, 220);
       });
       bar.addEventListener('dblclick', ev => {
         ev.stopPropagation();
-        if (e.htmlLink) window.open(e.htmlLink, '_blank', 'noopener');
+        clearTimeout(clickTimer); clickTimer = null;
+        openEditPopup(e.editLink);
       });
       evLayer.appendChild(bar);
     }
