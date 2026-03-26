@@ -192,7 +192,7 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
       const col = c;
       cell.addEventListener('click', () => {
         const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
-        if (dayEvts.length) onDayClick(dateStr, dayEvts);
+        onDayClick(dateStr, dayEvts);
       });
 
       bgGrid.appendChild(cell);

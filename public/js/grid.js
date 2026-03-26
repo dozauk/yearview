@@ -56,6 +56,7 @@ export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) 
         num.textContent = date.getDate();
         cell.appendChild(num);
 
+        cell.addEventListener('click', () => onDayClick(key, events));
         renderEventBars(cell, events, key, onDayClick, colorSource, showChip);
         weekEl.appendChild(cell);
       });

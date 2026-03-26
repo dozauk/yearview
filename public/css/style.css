@@ -195,3 +195,5 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .popover-event-cal { font-size: 0.72rem; color: var(--color-text-muted); }
 .popover-event-link { display: inline-block; margin-top: 3px; font-size: 0.72rem; color: var(--color-primary); text-decoration: none; }
 .popover-event-link:hover { text-decoration: underline; }
+.popover-new-event { padding-bottom: 6px; margin-bottom: 4px; border-bottom: 1px solid var(--color-border); }
+.popover-new-event .popover-event-link { font-size: 0.82rem; font-weight: 500; margin-top: 0; }

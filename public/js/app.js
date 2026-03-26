@@ -1,5 +1,5 @@
 import { fetchCalendars, fetchEvents } from './api.js';
-import { buildDayMap, formatEventTime, formatPopoverDate, resolveColors, openEditPopup } from './util.js';
+import { buildDayMap, formatEventTime, formatPopoverDate, resolveColors, openEditPopup, openNewEventPopup } from './util.js';
 import { renderTimeline } from './timeline.js';
 import { renderGrid } from './grid.js';
 
@@ -134,6 +134,17 @@ function applySidebarState() {
 function openPopover(dateKey, dayEvents) {
   popoverDate.textContent = formatPopoverDate(dateKey);
   popoverEvents.innerHTML = '';
+
+  // New event link always at the top
+  const newLi = document.createElement('li');
+  newLi.className = 'popover-new-event';
+  const newLink = document.createElement('a');
+  newLink.className = 'popover-event-link';
+  newLink.href = '#';
+  newLink.textContent = '+ New event';
+  newLink.addEventListener('click', ev => { ev.preventDefault(); openNewEventPopup(dateKey); });
+  newLi.appendChild(newLink);
+  popoverEvents.appendChild(newLi);
 
   // Filter to visible calendars
   const visible = dayEvents.filter(e => visibleIds.has(e.calendarId));

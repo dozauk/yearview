@@ -81,14 +81,26 @@ export function formatEventTime(event) {
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// Open the Google Calendar event editor in a centred popup window
-export function openEditPopup(url) {
-  if (!url) return;
+// Open Google Calendar new event form for a given date (YYYY-MM-DD)
+export function openNewEventPopup(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const start = `${y}${m}${d}`;
+  const next = new Date(+y, +m - 1, +d + 1);
+  const end = `${next.getFullYear()}${String(next.getMonth()+1).padStart(2,'0')}${String(next.getDate()).padStart(2,'0')}`;
+  openCalPopup(`https://calendar.google.com/calendar/r/eventedit?dates=${start}/${end}`, 'gcal-new');
+}
+
+function openCalPopup(url, name) {
   const w = 920, h = 720;
   const left = Math.round((screen.width  - w) / 2);
   const top  = Math.round((screen.height - h) / 2);
-  window.open(url, 'gcal-edit',
-    `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+  window.open(url, name, `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+}
+
+// Open the Google Calendar event editor in a centred popup window
+export function openEditPopup(url) {
+  if (!url) return;
+  openCalPopup(url, 'gcal-edit');
 }
 
 // Resolve primary bar colour and optional secondary chip colour.
