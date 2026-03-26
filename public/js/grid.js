@@ -56,7 +56,7 @@ export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) 
         num.textContent = date.getDate();
         cell.appendChild(num);
 
-        cell.addEventListener('click', () => onDayClick(key, events));
+        cell.addEventListener('click', ev => onDayClick(key, events, ev.currentTarget));
         renderEventBars(cell, events, key, onDayClick, colorSource, showChip);
         weekEl.appendChild(cell);
       });
@@ -91,9 +91,10 @@ function renderEventBars(cell, events, key, onDayClick, colorSource, showChip) {
     bar.addEventListener('click', ev => {
       ev.stopPropagation();
       if (clickTimer) return;
+      const anchorEl = ev.currentTarget;
       clickTimer = setTimeout(() => {
         clickTimer = null;
-        onDayClick(key, events);
+        onDayClick(key, events, anchorEl);
       }, 220);
     });
     bar.addEventListener('dblclick', ev => {
@@ -108,7 +109,7 @@ function renderEventBars(cell, events, key, onDayClick, colorSource, showChip) {
     const more = document.createElement('span');
     more.className = 'more-link';
     more.textContent = `+${overflow} more`;
-    more.addEventListener('click', ev => { ev.stopPropagation(); onDayClick(key, events); });
+    more.addEventListener('click', ev => { ev.stopPropagation(); onDayClick(key, events, ev.currentTarget); });
     cell.appendChild(more);
   }
 }

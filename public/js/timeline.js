@@ -190,9 +190,9 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
 
       // Click on cell background → open popover for that day
       const col = c;
-      cell.addEventListener('click', () => {
+      cell.addEventListener('click', ev => {
         const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
-        onDayClick(dateStr, dayEvts);
+        onDayClick(dateStr, dayEvts, ev.currentTarget);
       });
 
       bgGrid.appendChild(cell);
@@ -227,11 +227,12 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
       bar.addEventListener('click', ev => {
         ev.stopPropagation();
         if (clickTimer) return; // part of a double-click, ignore
+        const anchorEl = ev.currentTarget;
         clickTimer = setTimeout(() => {
           clickTimer = null;
           const col = e.colStart;
           const dayEvts = positioned.filter(pe => pe.colStart <= col && pe.colEnd >= col);
-          onDayClick(e.clippedStart, dayEvts);
+          onDayClick(e.clippedStart, dayEvts, anchorEl);
         }, 220);
       });
       bar.addEventListener('dblclick', ev => {
@@ -259,7 +260,7 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
       more.addEventListener('click', ev => {
         ev.stopPropagation();
         const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
-        onDayClick(dateStr, dayEvts);
+        onDayClick(dateStr, dayEvts, ev.currentTarget);
       });
       evLayer.appendChild(more);
     }

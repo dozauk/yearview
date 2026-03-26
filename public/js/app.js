@@ -131,7 +131,7 @@ function applySidebarState() {
 }
 
 // ── Popover ────────────────────────────────────────────────────────────────
-function openPopover(dateKey, dayEvents) {
+function openPopover(dateKey, dayEvents, anchor) {
   popoverDate.textContent = formatPopoverDate(dateKey);
   popoverEvents.innerHTML = '';
 
@@ -192,12 +192,32 @@ function openPopover(dateKey, dayEvents) {
     popoverEvents.appendChild(li);
   });
 
-  // Position near centre of viewport
-  popover.style.top = '50%';
-  popover.style.left = '50%';
-  popover.style.transform = 'translate(-50%, -50%)';
+  // Position near the anchor element, clamped to viewport
+  popover.style.transform = '';
   popover.hidden = false;
   popoverBackdrop.hidden = false;
+
+  const PW = popover.offsetWidth  || 280;
+  const PH = popover.offsetHeight || 200;
+  const MARGIN = 8;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let top, left;
+  if (anchor) {
+    const r = anchor.getBoundingClientRect();
+    // Try below the anchor first, fall back to above
+    top  = r.bottom + MARGIN + PH > vh ? r.top - PH - MARGIN : r.bottom + MARGIN;
+    left = r.left;
+  } else {
+    top  = (vh - PH) / 2;
+    left = (vw - PW) / 2;
+  }
+  // Clamp to viewport
+  left = Math.max(MARGIN, Math.min(left, vw - PW - MARGIN));
+  top  = Math.max(MARGIN, Math.min(top,  vh - PH - MARGIN));
+  popover.style.top  = `${top}px`;
+  popover.style.left = `${left}px`;
 }
 
 function closePopover() {
