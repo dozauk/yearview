@@ -25,11 +25,18 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   },
 }));
 
 // ── Static files ───────────────────────────────────────────────────────────
+// Redirect authenticated users away from the landing page immediately
+app.get('/', (req, res, next) => {
+  if (req.session.tokens) return res.redirect('/calendar.html');
+  next();
+});
+
 app.use(express.static(join(__dirname, 'public')));
 
 // ── OAuth client factory ───────────────────────────────────────────────────
