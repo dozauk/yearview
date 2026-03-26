@@ -9,6 +9,7 @@ let view        = localStorage.getItem('yv-view') || 'timeline'; // 'timeline' |
 let align       = localStorage.getItem('yv-align') || 'weekday'; // 'weekday' | 'date'
 let colorSource = localStorage.getItem('yv-color-source') || 'event'; // 'event' | 'calendar'
 let showChip    = localStorage.getItem('yv-show-chip') !== 'false'; // default true
+let timedStyle  = localStorage.getItem('yv-timed-style') || 'bar'; // 'bar' | 'text'
 let calendars   = [];   // [{id, summary, color, primary}]
 let events      = [];   // raw event list
 let visibleIds  = new Set();
@@ -26,6 +27,8 @@ const alignDateBtn    = document.getElementById('align-date');
 const colorFromEventBtn    = document.getElementById('color-from-event');
 const colorFromCalendarBtn = document.getElementById('color-from-calendar');
 const chipToggle      = document.getElementById('chip-toggle');
+const timedBarBtn     = document.getElementById('timed-bar');
+const timedTextBtn    = document.getElementById('timed-text');
 const refreshBtn      = document.getElementById('refresh-btn');
 const sidebarToggle  = document.getElementById('sidebar-toggle');
 const sidebar        = document.getElementById('sidebar');
@@ -69,7 +72,7 @@ function render() {
   yearGrid.hidden = false;
   const dayMap = buildDayMap(events, visibleIds);
   alignToggle.style.display = view === 'timeline' ? '' : 'none';
-  const colorOpts = { colorSource, showChip };
+  const colorOpts = { colorSource, showChip, timedStyle };
   if (view === 'timeline') {
     renderTimeline(yearGrid, year, events, visibleIds, openPopover, align, colorOpts);
   } else {
@@ -124,6 +127,8 @@ function applySettings() {
   colorFromEventBtn.classList.toggle('active', colorSource === 'event');
   colorFromCalendarBtn.classList.toggle('active', colorSource === 'calendar');
   chipToggle.checked = showChip;
+  timedBarBtn.classList.toggle('active', timedStyle === 'bar');
+  timedTextBtn.classList.toggle('active', timedStyle === 'text');
 }
 
 function applySidebarState() {
@@ -311,6 +316,20 @@ colorFromCalendarBtn.addEventListener('click', () => {
 chipToggle.addEventListener('change', () => {
   showChip = chipToggle.checked;
   localStorage.setItem('yv-show-chip', showChip);
+  render();
+});
+
+timedBarBtn.addEventListener('click', () => {
+  timedStyle = 'bar';
+  localStorage.setItem('yv-timed-style', timedStyle);
+  applySettings();
+  render();
+});
+
+timedTextBtn.addEventListener('click', () => {
+  timedStyle = 'text';
+  localStorage.setItem('yv-timed-style', timedStyle);
+  applySettings();
   render();
 });
 

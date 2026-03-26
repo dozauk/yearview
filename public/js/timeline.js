@@ -61,7 +61,7 @@ function assignLanes(events) {
 // ── Main export ────────────────────────────────────────────────────────────
 
 export function renderTimeline(container, year, allEvents, visibleIds, onDayClick, align = 'weekday', colorOpts = {}) {
-  const { colorSource = 'event', showChip = true } = colorOpts;
+  const { colorSource = 'event', showChip = true, timedStyle = 'bar' } = colorOpts;
   container.innerHTML = '';
   const today = todayYmd();
   const cols = totalCols(year, align);
@@ -207,16 +207,22 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
     // Spanning event bars
     for (const e of shownEvents) {
       const { primary, chip } = resolveColors(e, colorSource);
+      const asText = timedStyle === 'text' && !e.allDay && e.colStart === e.colEnd;
       const bar = document.createElement('div');
       bar.className = 'event-bar tl-event-bar' +
         (!e.startsInMonth ? ' continues-left'  : '') +
-        (!e.endsInMonth   ? ' continues-right' : '');
-      bar.style.background = primary;
+        (!e.endsInMonth   ? ' continues-right' : '') +
+        (asText           ? ' event-text'       : '');
+      if (asText) {
+        bar.style.color      = primary;
+      } else {
+        bar.style.background = primary;
+      }
       bar.style.gridColumn  = `${e.colStart + 1} / ${e.colEnd + 2}`;
       bar.style.gridRow     = String(e.lane + 1);
       bar.textContent       = e.title;
       bar.title             = e.title;
-      if (showChip && chip) {
+      if (!asText && showChip && chip) {
         const chipEl = document.createElement('span');
         chipEl.className = 'color-chip';
         chipEl.style.background = chip;

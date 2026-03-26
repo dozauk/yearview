@@ -179,6 +179,8 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 /* ── Event bars ───────────────────────────────────────────────────────── */
 .event-bar { position: relative; display: block; font-size: 0.68rem; color: #fff; border-radius: 2px; padding: 1px 4px; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; line-height: 1.5; }
 .event-bar:hover { filter: brightness(1.1); }
+.event-bar.event-text { background: transparent; color: inherit; font-weight: 500; padding-left: 2px; }
+.event-bar.event-text:hover { filter: none; opacity: 0.75; }
 
 /* Secondary colour chip — small dot in top-right corner of bar */
 .color-chip { position: absolute; top: 3px; right: 3px; width: 6px; height: 6px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.5); flex-shrink: 0; pointer-events: none; }

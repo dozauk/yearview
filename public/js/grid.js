@@ -4,7 +4,7 @@ import { DAYS, MONTHS, monthGridDays, toWeeks, ymd, todayYmd, resolveColors, ope
 const MAX_BARS = 3;
 
 export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) {
-  const { colorSource = 'event', showChip = true } = colorOpts;
+  const { colorSource = 'event', showChip = true, timedStyle = 'bar' } = colorOpts;
   container.innerHTML = '';
   const today = todayYmd();
 
@@ -57,7 +57,7 @@ export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) 
         cell.appendChild(num);
 
         cell.addEventListener('click', ev => onDayClick(key, events, ev.currentTarget));
-        renderEventBars(cell, events, key, onDayClick, colorSource, showChip);
+        renderEventBars(cell, events, key, onDayClick, colorSource, showChip, timedStyle);
         weekEl.appendChild(cell);
       });
 
@@ -70,18 +70,23 @@ export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) 
   container.appendChild(gridEl);
 }
 
-function renderEventBars(cell, events, key, onDayClick, colorSource, showChip) {
+function renderEventBars(cell, events, key, onDayClick, colorSource, showChip, timedStyle = 'bar') {
   const visible = events.slice(0, MAX_BARS);
   const overflow = events.length - MAX_BARS;
 
   visible.forEach(e => {
     const { primary, chip } = resolveColors(e, colorSource);
+    const asText = timedStyle === 'text' && !e.allDay;
     const bar = document.createElement('span');
-    bar.className = 'event-bar';
-    bar.style.background = primary;
+    bar.className = 'event-bar' + (asText ? ' event-text' : '');
+    if (asText) {
+      bar.style.color = primary;
+    } else {
+      bar.style.background = primary;
+    }
     bar.textContent = e.title;
     bar.title = e.title;
-    if (showChip && chip) {
+    if (!asText && showChip && chip) {
       const chipEl = document.createElement('span');
       chipEl.className = 'color-chip';
       chipEl.style.background = chip;
