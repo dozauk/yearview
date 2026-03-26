@@ -1,8 +1,7 @@
 services:
 
   yearview:
-    image: yearview:latest          # built locally, or replace with ghcr.io/dozauk/yearview:latest
-    build: .                        # comment this out if pulling a pre-built image
+    image: ghcr.io/dozauk/yearview:latest
     restart: unless-stopped
     # No ports: exposed — traffic arrives only via the Cloudflare tunnel
     volumes:

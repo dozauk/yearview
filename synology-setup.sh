@@ -77,11 +77,11 @@ else
   warn "To update credentials, edit $INSTALL_DIR/.env manually."
 fi
 
-# ── Build and start containers ───────────────────────────────────────────────
+# ── Pull images and start containers ─────────────────────────────────────────
 echo ""
-info "Building image and starting containers ..."
-docker compose pull cloudflared 2>/dev/null || true   # pull cloudflared image
-docker compose up -d --build                           # build yearview + start all
+info "Pulling latest images and starting containers ..."
+docker compose pull          # pull yearview:latest from ghcr.io + cloudflared
+docker compose up -d         # start all services
 
 # ── Done ─────────────────────────────────────────────────────────────────────
 echo ""
