@@ -125,6 +125,13 @@ app.get('/auth/status', (req, res) => {
   res.json({ authenticated: !!req.session.tokens });
 });
 
+app.get('/api/version', (_req, res) => {
+  res.json({
+    sha:   process.env.GIT_SHA   || 'dev',
+    built: process.env.BUILD_TIME || 'local',
+  });
+});
+
 // ── API proxy ──────────────────────────────────────────────────────────────
 // Middleware: require auth
 function requireAuth(req, res, next) {

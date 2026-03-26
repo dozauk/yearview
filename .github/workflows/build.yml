@@ -28,6 +28,9 @@ jobs:
           context: .
           push: true
           provenance: false
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            BUILD_TIME=${{ github.event.head_commit.timestamp }}
           tags: |
             ghcr.io/dozauk/yearview:latest
             ghcr.io/dozauk/yearview:${{ github.sha }}

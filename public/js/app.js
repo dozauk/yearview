@@ -298,5 +298,16 @@ popoverClose.addEventListener('click', closePopover);
 popoverBackdrop.addEventListener('click', closePopover);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopover(); });
 
+// ── Version footer ─────────────────────────────────────────────────────────
+async function loadVersion() {
+  try {
+    const { sha, built } = await fetch('/api/version').then(r => r.json());
+    const short = sha === 'dev' ? 'dev' : sha.slice(0, 7);
+    const date = built === 'local' ? 'local' : new Date(built).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    document.getElementById('version-label').textContent = `v${short} · ${date}`;
+  } catch { /* non-critical */ }
+}
+
 // ── Go ─────────────────────────────────────────────────────────────────────
 init();
+loadVersion();

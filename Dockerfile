@@ -18,4 +18,10 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV DB_PATH=/data/sessions.db
 
+# Injected at build time by GitHub Actions
+ARG GIT_SHA=dev
+ARG BUILD_TIME=local
+ENV GIT_SHA=$GIT_SHA
+ENV BUILD_TIME=$BUILD_TIME
+
 CMD ["node", "server.js"]

@@ -58,7 +58,7 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .sidebar.collapsed { width: var(--sidebar-collapsed-w); overflow: hidden; }
 .sidebar.collapsed .sidebar-inner { display: none; }
 
-.sidebar-inner { padding: 12px 8px; }
+.sidebar-inner { padding: 12px 8px; display: flex; flex-direction: column; min-height: 100%; }
 .sidebar-header { display: flex; align-items: center; gap: 4px; margin-bottom: 10px; }
 .sidebar-title { font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--color-text-muted); flex: 1; }
 
@@ -75,6 +75,14 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .setting-label { font-size: 0.78rem; color: var(--color-text); flex: 1; min-width: 60px; }
 .setting-toggle { display: flex; }
 .setting-checkbox { width: 14px; height: 14px; cursor: pointer; accent-color: var(--color-primary); }
+
+/* ── Sidebar footer ───────────────────────────────────────────────────── */
+.sidebar-footer { margin-top: auto; padding: 14px 6px 8px; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 4px; }
+.sidebar-version { font-size: 0.7rem; color: var(--color-text-muted); font-family: monospace; }
+.sidebar-copyright { font-size: 0.7rem; color: var(--color-text-muted); }
+.sidebar-links { font-size: 0.7rem; color: var(--color-text-muted); }
+.sidebar-links a { color: var(--color-primary); text-decoration: none; }
+.sidebar-links a:hover { text-decoration: underline; }
 
 /* ── Main view ────────────────────────────────────────────────────────── */
 .main-view { flex: 1; overflow: auto; padding: 12px; }
