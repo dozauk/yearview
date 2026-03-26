@@ -151,6 +151,7 @@ app.get('/api/events', requireAuth, async (req, res) => {
         allDay: !e.start.dateTime,
         calendarColor: calendars[i].backgroundColor || '#4285f4',
         eventColor: e.colorId ? (EVENT_COLOR_MAP[e.colorId] || null) : null,
+        htmlLink: e.htmlLink || null,
       }))
     );
 

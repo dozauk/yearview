@@ -87,6 +87,10 @@ function renderEventBars(cell, events, key, onDayClick, colorSource, showChip) {
       bar.appendChild(chipEl);
     }
     bar.addEventListener('click', ev => { ev.stopPropagation(); onDayClick(key, events); });
+    bar.addEventListener('dblclick', ev => {
+      ev.stopPropagation();
+      if (e.htmlLink) window.open(e.htmlLink, '_blank', 'noopener');
+    });
     cell.appendChild(bar);
   });
 

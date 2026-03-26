@@ -165,6 +165,15 @@ function openPopover(dateKey, dayEvents) {
     info.appendChild(titleEl);
     info.appendChild(timeEl);
     info.appendChild(calEl);
+    if (e.htmlLink) {
+      const linkEl = document.createElement('a');
+      linkEl.className = 'popover-event-link';
+      linkEl.href = e.htmlLink;
+      linkEl.target = '_blank';
+      linkEl.rel = 'noopener';
+      linkEl.textContent = 'Open in Google Calendar →';
+      info.appendChild(linkEl);
+    }
     li.appendChild(dot);
     li.appendChild(info);
     popoverEvents.appendChild(li);

@@ -229,6 +229,10 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
         const dayEvts = positioned.filter(pe => pe.colStart <= col && pe.colEnd >= col);
         onDayClick(e.clippedStart, dayEvts);
       });
+      bar.addEventListener('dblclick', ev => {
+        ev.stopPropagation();
+        if (e.htmlLink) window.open(e.htmlLink, '_blank', 'noopener');
+      });
       evLayer.appendChild(bar);
     }
 
