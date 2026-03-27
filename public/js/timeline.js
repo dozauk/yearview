@@ -61,7 +61,7 @@ function assignLanes(events) {
 // ── Main export ────────────────────────────────────────────────────────────
 
 export function renderTimeline(container, year, allEvents, visibleIds, onDayClick, align = 'weekday', colorOpts = {}) {
-  const { colorSource = 'event', showChip = true, timedStyle = 'bar' } = colorOpts;
+  const { colorSource = 'event', showChip = true, timedStyle = 'bar', fadePast = true } = colorOpts;
   container.innerHTML = '';
   const today = todayYmd();
   const cols = totalCols(year, align);
@@ -182,8 +182,9 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
 
       const dateStr = `${year}-${mm}-${String(dayNum).padStart(2, '0')}`;
       cell.className = 'tl-cell' +
-        (dateStr === today  ? ' today'   : '') +
-        (isWeekend          ? ' weekend' : '');
+        (dateStr === today               ? ' today'    : '') +
+        (isWeekend                       ? ' weekend'  : '') +
+        (fadePast && dateStr < today     ? ' past-day' : '');
       cell.dataset.date = dateStr;
 
       const num = document.createElement('div');
@@ -216,11 +217,13 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
     for (const e of shownEvents) {
       const { primary, chip } = resolveColors(e, colorSource);
       const asText = timedStyle === 'text' && !e.allDay && e.colStart === e.colEnd;
+      const isPast = fadePast && e.eEnd < today;
       const bar = document.createElement('div');
       bar.className = 'event-bar tl-event-bar' +
         (!e.startsInMonth ? ' continues-left'  : '') +
         (!e.endsInMonth   ? ' continues-right' : '') +
-        (asText           ? ' event-text'       : '');
+        (asText           ? ' event-text'       : '') +
+        (isPast           ? ' past-event'       : '');
       if (asText) {
         bar.style.color      = primary;
       } else {

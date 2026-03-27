@@ -182,6 +182,9 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .event-bar:hover { filter: brightness(1.1); }
 .event-bar.event-text { background: transparent; color: inherit; font-weight: 500; padding-left: 2px; }
 .event-bar.event-text:hover { filter: none; opacity: 0.75; }
+.past-day { opacity: 0.38; }
+.past-day.today { opacity: 1; } /* should never coincide, but just in case */
+.past-event { opacity: 0.38; }
 
 /* Secondary colour chip — small dot in top-right corner of bar */
 .color-chip { position: absolute; top: 3px; right: 3px; width: 6px; height: 6px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.5); flex-shrink: 0; pointer-events: none; }

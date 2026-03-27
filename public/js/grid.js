@@ -4,7 +4,7 @@ import { DAYS, MONTHS, monthGridDays, toWeeks, ymd, todayYmd, resolveColors, ope
 const MAX_BARS = 3;
 
 export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) {
-  const { colorSource = 'event', showChip = true, timedStyle = 'bar' } = colorOpts;
+  const { colorSource = 'event', showChip = true, timedStyle = 'bar', fadePast = true } = colorOpts;
   container.innerHTML = '';
   const today = todayYmd();
 
@@ -47,8 +47,9 @@ export function renderGrid(container, year, dayMap, onDayClick, colorOpts = {}) 
 
         const cell = document.createElement('div');
         cell.className = 'grid-cell' +
-          (key === today ? ' today' : '') +
-          (!isThisMonth ? ' other-month' : '');
+          (key === today               ? ' today'       : '') +
+          (!isThisMonth               ? ' other-month'  : '') +
+          (fadePast && key < today    ? ' past-day'     : '');
         cell.dataset.date = key;
 
         const num = document.createElement('div');

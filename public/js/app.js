@@ -10,6 +10,7 @@ let align       = localStorage.getItem('yv-align') || 'weekday'; // 'weekday' | 
 let colorSource = localStorage.getItem('yv-color-source') || 'event'; // 'event' | 'calendar'
 let showChip    = localStorage.getItem('yv-show-chip') !== 'false'; // default true
 let timedStyle  = localStorage.getItem('yv-timed-style') || 'bar'; // 'bar' | 'text'
+let fadePast    = localStorage.getItem('yv-fade-past') !== 'false'; // default true
 let calendars   = [];   // [{id, summary, color, primary}]
 let events      = [];   // raw event list
 let visibleIds  = new Set();
@@ -29,6 +30,7 @@ const colorFromCalendarBtn = document.getElementById('color-from-calendar');
 const chipToggle      = document.getElementById('chip-toggle');
 const timedBarBtn     = document.getElementById('timed-bar');
 const timedTextBtn    = document.getElementById('timed-text');
+const fadePastToggle  = document.getElementById('fade-past-toggle');
 const refreshBtn      = document.getElementById('refresh-btn');
 const sidebarToggle  = document.getElementById('sidebar-toggle');
 const sidebar        = document.getElementById('sidebar');
@@ -72,7 +74,7 @@ function render() {
   yearGrid.hidden = false;
   const dayMap = buildDayMap(events, visibleIds);
   alignToggle.style.display = view === 'timeline' ? '' : 'none';
-  const colorOpts = { colorSource, showChip, timedStyle };
+  const colorOpts = { colorSource, showChip, timedStyle, fadePast };
   if (view === 'timeline') {
     renderTimeline(yearGrid, year, events, visibleIds, openPopover, align, colorOpts);
   } else {
@@ -129,6 +131,7 @@ function applySettings() {
   chipToggle.checked = showChip;
   timedBarBtn.classList.toggle('active', timedStyle === 'bar');
   timedTextBtn.classList.toggle('active', timedStyle === 'text');
+  fadePastToggle.checked = fadePast;
 }
 
 function applySidebarState() {
@@ -316,6 +319,12 @@ colorFromCalendarBtn.addEventListener('click', () => {
 chipToggle.addEventListener('change', () => {
   showChip = chipToggle.checked;
   localStorage.setItem('yv-show-chip', showChip);
+  render();
+});
+
+fadePastToggle.addEventListener('change', () => {
+  fadePast = fadePastToggle.checked;
+  localStorage.setItem('yv-fade-past', fadePast);
   render();
 });
 
