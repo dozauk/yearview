@@ -68,6 +68,25 @@ async function loadData() {
   }
 }
 
+async function refreshData() {
+  refreshBtn.classList.add('spinning');
+  try {
+    [calendars, events] = await Promise.all([fetchCalendars(), fetchEvents(year)]);
+    // Preserve visible calendars where possible; add any new ones as visible
+    const existingIds = new Set([...visibleIds]);
+    const allIds = new Set(calendars.map(c => c.id));
+    visibleIds = new Set([...allIds].filter(id => existingIds.has(id) || !existingIds.size));
+    // Show any brand-new calendars
+    calendars.forEach(c => { if (!existingIds.has(c.id)) visibleIds.add(c.id); });
+    renderSidebar();
+    render();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    refreshBtn.classList.remove('spinning');
+  }
+}
+
 // ── Render ─────────────────────────────────────────────────────────────────
 function render() {
   loadingEl.hidden = true;
@@ -282,7 +301,7 @@ alignDateBtn.addEventListener('click', () => {
   render();
 });
 
-refreshBtn.addEventListener('click', loadData);
+refreshBtn.addEventListener('click', refreshData);
 
 sidebarToggle.addEventListener('click', () => {
   sidebarOpen = !sidebarOpen;

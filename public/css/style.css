@@ -32,6 +32,8 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .btn-primary { background: var(--color-primary); color: #fff; }
 .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.1rem; padding: 4px 8px; border-radius: var(--radius); color: var(--color-text); line-height: 1; transition: background .15s; }
 .btn-icon:hover { background: var(--color-border); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-icon.spinning { animation: spin 0.7s linear infinite; pointer-events: none; }
 .btn-text { background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 0.8rem; text-decoration: none; padding: 4px 6px; }
 .btn-text:hover { color: var(--color-text); }
 .btn-text-sm { background: none; border: none; cursor: pointer; color: var(--color-primary); font-size: 0.75rem; padding: 0 4px; }
