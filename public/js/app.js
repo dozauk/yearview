@@ -91,7 +91,6 @@ async function refreshData() {
 function render() {
   loadingEl.hidden = true;
   yearGrid.hidden = false;
-  const dayMap = buildDayMap(events, visibleIds);
   alignToggle.style.display = view === 'timeline' ? '' : 'none';
   const colorOpts = { colorSource, showChip, timedStyle, fadePast };
   if (view === 'timeline') {
