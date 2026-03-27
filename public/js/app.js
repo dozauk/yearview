@@ -1,5 +1,5 @@
 import { fetchCalendars, fetchEvents } from './api.js';
-import { buildDayMap, formatEventTime, formatPopoverDate, resolveColors, openEditPopup, openNewEventPopup } from './util.js';
+import { formatEventTime, formatPopoverDate, resolveColors, openEditPopup, openNewEventPopup } from './util.js';
 import { renderTimeline } from './timeline.js';
 import { renderGrid } from './grid.js';
 
@@ -97,8 +97,7 @@ function render() {
   if (view === 'timeline') {
     renderTimeline(yearGrid, year, events, visibleIds, openPopover, align, colorOpts);
   } else {
-    const dayMap = buildDayMap(events, visibleIds);
-    renderGrid(yearGrid, year, dayMap, openPopover, colorOpts);
+    renderGrid(yearGrid, year, events, visibleIds, openPopover, colorOpts);
   }
 }
 

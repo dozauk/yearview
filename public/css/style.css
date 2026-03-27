@@ -168,12 +168,15 @@ html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Sego
 .grid-months { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .grid-month { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
 .grid-month-title { font-weight: 600; font-size: 0.85rem; padding: 8px 10px 4px; border-bottom: 1px solid var(--color-border); }
-.grid-dow-row { display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--color-border); }
+.grid-dow-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--color-border); }
 .grid-dow-row .dow { text-align: center; font-size: 0.65rem; color: var(--color-text-muted); padding: 3px 0; }
-.grid-week { display: grid; grid-template-columns: repeat(7, 1fr); }
-.grid-cell { min-height: 60px; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: 2px 2px 0; position: relative; background: var(--color-surface); }
+.grid-week-wrapper { position: relative; }
+.grid-week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.grid-cell { min-height: 72px; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: 2px 2px 0; overflow: hidden; background: var(--color-surface); }
 .grid-cell:last-child { border-right: none; }
-.grid-week:last-child .grid-cell { border-bottom: none; }
+.grid-week-wrapper:last-child .grid-cell { border-bottom: none; }
+.grid-events-layer { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-content: start; pointer-events: none; padding-top: 17px; }
+.grid-event-bar { pointer-events: auto; margin: 0 1px 1px; }
 .grid-cell.today { background: var(--color-today); }
 .grid-cell.today .day-num { color: var(--color-today-border); font-weight: 700; }
 .grid-cell.other-month { background: #fafafa; }
