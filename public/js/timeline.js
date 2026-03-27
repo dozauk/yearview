@@ -175,7 +175,7 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
       const cell = document.createElement('div');
 
       if (!isReal) {
-        cell.className = 'tl-cell tl-empty' + (isWeekend ? ' weekend' : '');
+        cell.className = 'tl-cell tl-empty';
         bgGrid.appendChild(cell);
         continue;
       }
