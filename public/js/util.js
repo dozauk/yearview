@@ -29,12 +29,11 @@ export function monthGridDays(year, month) {
   const start = weekStart(year, month);
   const days = [];
   const d = new Date(start);
-  // Keep going until we've covered the full month and end on a Sunday
-  while (d.getMonth() !== month || d.getDay() !== 1 || days.length === 0) {
+  while (true) {
     days.push(new Date(d));
     d.setDate(d.getDate() + 1);
-    if (days.length > 7 * 6) break; // safety
-    // Stop after the Sunday that is >= end of month
+    if (days.length > 7 * 6) break; // safety: never more than 6 weeks
+    // Stop once we've passed the end of the month and landed back on a Monday
     if (days.length >= 28 && d.getDay() === 1 && d.getMonth() !== month) break;
   }
   return days;
