@@ -1,4 +1,4 @@
-# YearView
+# <img src="public/img/logo.svg" width="32" height="32" valign="middle" alt=""> YearView
 
 A self-hosted web app that displays your entire Google Calendar year in a single view. Connect your Google account and see all your events laid out across 12 months — with two view modes, per-calendar filtering, and direct links into the Google Calendar editor.
 
