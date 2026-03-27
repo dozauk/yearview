@@ -12,7 +12,10 @@
     p, li { line-height: 1.6; color: #374151; margin-bottom: 8px; }
     ul { padding-left: 20px; }
     .meta { color: #6b7280; font-size: 0.85rem; margin-bottom: 32px; }
-    pre { background: #f3f4f6; border-radius: 6px; padding: 20px; white-space: pre-wrap; font-size: 0.82rem; line-height: 1.55; color: #374151; }
+    .badge { display: inline-block; background: #2563eb; color: #fff; font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 4px; letter-spacing: .03em; margin-bottom: 20px; }
+    .notice { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 16px 20px; margin: 24px 0; }
+    .notice h2 { margin-top: 0; color: #166534; }
+    .notice p { color: #166534; margin: 0; }
     a { color: #4285f4; }
     .back { display: inline-block; margin-top: 32px; color: #4285f4; text-decoration: none; font-size: 0.85rem; }
   </style>
@@ -22,27 +25,27 @@
     <h1>License</h1>
     <p class="meta">YearView &copy; 2026 Simon Mendoza</p>
 
-    <pre>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
-(CC BY-NC-SA 4.0)
+    <span class="badge">AGPL-3.0</span>
 
-Copyright (c) 2026 Simon Mendoza
+    <p>YearView is open-source software licensed under the <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">GNU Affero General Public License v3.0</a>.</p>
 
-You are free to:
-  Share  — copy and redistribute the material in any medium or format
-  Adapt  — remix, transform, and build upon the material
+    <h2>What this means</h2>
+    <ul>
+      <li>You are free to use, study, modify, and distribute the source code.</li>
+      <li>If you run a modified version as a network service (e.g. a hosted web app), you must make your modified source code available to users of that service under the same AGPL-3.0 terms.</li>
+      <li>Any distributed copies or derivatives must carry the same licence.</li>
+    </ul>
 
-Under the following terms:
-  Attribution      — You must give appropriate credit, provide a link to
-                     the license, and indicate if changes were made.
-  NonCommercial    — You may not use the material for commercial purposes.
-  ShareAlike       — If you remix, transform, or build upon the material,
-                     you must distribute your contributions under the same
-                     license as the original.
+    <h2>What this does <em>not</em> allow</h2>
+    <ul>
+      <li>Incorporating YearView into a proprietary product or service without open-sourcing the combined work.</li>
+      <li>Removing or obscuring copyright notices.</li>
+    </ul>
 
-No additional restrictions — You may not apply legal terms or technological
-measures that legally restrict others from doing anything the license permits.
-
-Full license text: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode</pre>
+    <div class="notice">
+      <h2>Commercial licensing</h2>
+      <p>If you want to use YearView in a product or service without the AGPL-3.0 share-alike requirement, a separate commercial licence is available. Please open an issue or contact the copyright holder via the <a href="https://github.com/dozauk/yearview" target="_blank" rel="noopener" style="color:#166534">GitHub repository</a>.</p>
+    </div>
 
     <a class="back" href="javascript:history.back()">&larr; Back</a>
   </div>
