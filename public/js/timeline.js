@@ -95,6 +95,9 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
     hCols.appendChild(cell);
   }
   headerRow.appendChild(hCols);
+  const hSpacerRight = document.createElement('div');
+  hSpacerRight.className = 'tl-label tl-label-right';
+  headerRow.appendChild(hSpacerRight);
   container.appendChild(headerRow);
 
   // ── One row per month ─────────────────────────────────────────────────
@@ -273,6 +276,10 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
 
     wrapper.appendChild(evLayer);
     row.appendChild(wrapper);
+    const labelRight = document.createElement('div');
+    labelRight.className = 'tl-label tl-label-right';
+    labelRight.textContent = MONTHS[m].slice(0, 3);
+    row.appendChild(labelRight);
     container.appendChild(row);
   }
 }
