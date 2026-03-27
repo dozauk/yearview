@@ -188,7 +188,12 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
 
       const num = document.createElement('div');
       num.className = 'day-num';
-      num.textContent = dayNum;
+      if (align === 'date') {
+        const rawDow = new Date(year, m, dayNum).getDay(); // 0=Sun
+        num.textContent = DAYS[rawDow === 0 ? 6 : rawDow - 1][0]; // Mon=0
+      } else {
+        num.textContent = dayNum;
+      }
       cell.appendChild(num);
 
       // Click on cell background → open popover for that day
