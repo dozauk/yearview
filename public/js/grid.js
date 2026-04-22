@@ -1,7 +1,7 @@
 // View B: 3-column × 4-row month grid
 // Multi-day events rendered as spanning bars in a per-week overlay layer,
 // matching the timeline view's lane-based approach.
-import { DAYS, MONTHS, monthGridDays, toWeeks, todayYmd, resolveColors, openEditPopup } from './util.js';
+import { DAYS, MONTHS, monthGridDays, toWeeks, todayYmd, resolveColors, openEditPopup, openNewEventPopup } from './util.js';
 
 const MAX_LANES = 3;
 
@@ -143,9 +143,19 @@ export function renderGrid(container, year, allEvents, visibleIds, onDayClick, c
         num.textContent = date.getDate();
         cell.appendChild(num);
 
+        let cellClickTimer = null;
         cell.addEventListener('click', ev => {
-          const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
-          onDayClick(key, dayEvts, ev.currentTarget);
+          if (cellClickTimer) return;
+          const anchorEl = ev.currentTarget;
+          cellClickTimer = setTimeout(() => {
+            cellClickTimer = null;
+            const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
+            onDayClick(key, dayEvts, anchorEl);
+          }, 220);
+        });
+        cell.addEventListener('dblclick', () => {
+          clearTimeout(cellClickTimer); cellClickTimer = null;
+          openNewEventPopup(key);
         });
         bgRow.appendChild(cell);
       });

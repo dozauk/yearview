@@ -5,7 +5,7 @@
 // align: 'weekday' → months offset so weekdays align vertically (~35-37 cols)
 //        'date'    → strict 31 cols, all months aligned by date number
 
-import { DAYS, MONTHS, todayYmd, resolveColors, openEditPopup } from './util.js';
+import { DAYS, MONTHS, todayYmd, resolveColors, openEditPopup, openNewEventPopup } from './util.js';
 
 const MAX_LANES = 3; // visible event rows per day before "+N more"
 
@@ -199,9 +199,19 @@ export function renderTimeline(container, year, allEvents, visibleIds, onDayClic
 
       // Click on cell background → open popover for that day
       const col = c;
+      let cellClickTimer = null;
       cell.addEventListener('click', ev => {
-        const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
-        onDayClick(dateStr, dayEvts, ev.currentTarget);
+        if (cellClickTimer) return;
+        const anchorEl = ev.currentTarget;
+        cellClickTimer = setTimeout(() => {
+          cellClickTimer = null;
+          const dayEvts = positioned.filter(e => e.colStart <= col && e.colEnd >= col);
+          onDayClick(dateStr, dayEvts, anchorEl);
+        }, 220);
+      });
+      cell.addEventListener('dblclick', () => {
+        clearTimeout(cellClickTimer); cellClickTimer = null;
+        openNewEventPopup(dateStr);
       });
 
       bgGrid.appendChild(cell);
